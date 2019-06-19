@@ -13,6 +13,7 @@ public class Driver {
 	private LocalDate dob;
 	private String nationality;
 	private String url;
+	private double punti;
 
 	public Driver(int driverId, String driverRef, int number, String code, String forename, String surname,
 			LocalDate dob, String nationality, String url) {
@@ -99,5 +100,42 @@ public class Driver {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + driverId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Driver other = (Driver) obj;
+		if (driverId != other.driverId)
+			return false;
+		return true;
+	}
+
+	public void setPunti(double max) {
+		 this.punti = max;
+		
+	}
+
+	public double getPunti() {
+		return punti;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("driverId=%s, surname=%s", driverId, surname);
+	}
+	
 
 }
