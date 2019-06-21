@@ -1,8 +1,12 @@
 package it.polito.tdp.formulaone.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -14,6 +18,8 @@ public class Model {
 	FormulaOneDAO dao;
 	SimpleDirectedWeightedGraph<Driver, DefaultWeightedEdge> grafo;
 	Map<Integer, Driver> map;
+	List<Driver> best;
+	int sconfitteBest;
 	
 
 	public Model() {
@@ -57,5 +63,49 @@ public class Model {
 		}
 		return best;
 	}
+	public List<Driver> dreamTeam(int K) {
+		best= new LinkedList<Driver>();
+		sconfitteBest=Integer.MAX_VALUE;
+		List<Driver> parziale= new LinkedList<Driver>();
+		
+		cercaBest(0, parziale, K);
+		
+		return best;
+	}
+	private int evaluate(List<Driver> parziale) {
+		int sconfitteParziale= 0;
+		
+		Set<Driver> in = new HashSet<Driver>(parziale);
+		Set<Driver> out = new HashSet<Driver>(grafo.vertexSet());
+		out.removeAll(in);
+		
+		for (DefaultWeightedEdge e : grafo.edgeSet()) {
+			if (out.contains(grafo.getEdgeSource(e)) && in.contains(grafo.getEdgeTarget(e))) {
+				sconfitteParziale += grafo.getEdgeWeight(e);
+			}
+		}
+		return sconfitteParziale;
+	}
+
+	private void cercaBest(int step, List<Driver> parziale, int K) {
+		List<Driver> candidati= new LinkedList<Driver>(grafo.vertexSet());
+		
+		
+		if(step==K && evaluate(parziale) < sconfitteBest ) {
+			best= new LinkedList<Driver>(parziale);
+			sconfitteBest= evaluate(parziale);
+			return;
+		}
+		for(Driver d: candidati) {
+			if(!parziale.contains(d)){
+				parziale.add(d);
+				this.cercaBest(step+1, parziale, K);
+				parziale.remove(d);
+			}
+		}
+		
+		
+	}
+
 
 }

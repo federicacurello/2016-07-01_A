@@ -3,6 +3,7 @@ package it.polito.tdp.formulaone;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.formulaone.model.Driver;
 import it.polito.tdp.formulaone.model.Model;
 import it.polito.tdp.formulaone.model.Season;
 import javafx.event.ActionEvent;
@@ -42,6 +43,21 @@ public class FormulaOneController {
 
     @FXML
     void doTrovaDreamTeam(ActionEvent event) {
+    	if(textInputK.getText()==null) {
+    		txtResult.setText("Devi scrivere un numero!");
+    		return;
+    	}
+    	try {
+    		int K= Integer.parseInt(textInputK.getText());
+    	txtResult.appendText("\nDream team : \n");
+    	for(Driver d: model.dreamTeam(K)) {
+    		txtResult.appendText(d.toString() + " - ");
+    		
+    	}} catch( NumberFormatException e) {
+    		txtResult.appendText("Errore, inserire un numero!");
+    		return;
+    	}
+    	
 
     }
 
